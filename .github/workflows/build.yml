@@ -1,0 +1,29 @@
+name: Build
+
+on:
+  # Manual runs
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Configure
+        run: cmake -B build
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Print tree of build dir
+        run: tree build /f /a
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ertransmogrify-${{ github.sha }}
+          path: |
+            build/Release
+            !build/Release/ertransmogrify.exp
+            !build/Release/ertransmogrify.lib
