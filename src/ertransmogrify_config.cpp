@@ -7,6 +7,7 @@ namespace fs = std::filesystem;
 
 bool ertransmogrify::config::include_unobtained_armor = true;
 bool ertransmogrify::config::include_cut_armor = true;
+bool ertransmogrify::config::spoilers = true;
 bool ertransmogrify::config::patch_grace_talk_script = true;
 unsigned int ertransmogrify::config::initialize_delay = 0;
 bool ertransmogrify::config::client_side_only = false;
@@ -30,6 +31,9 @@ void ertransmogrify::config::load(const fs::path &ini_path) {
         if (config.has("include_cut_armor"))
             include_cut_armor = config["include_cut_armor"] != "false";
 
+        if (config.has("spoilers"))
+            spoilers = config["spoilers"] != "false";
+
         if (config.has("patch_grace_talk_script"))
             patch_grace_talk_script = config["patch_grace_talk_script"] != "false";
 
@@ -44,6 +48,7 @@ void ertransmogrify::config::load(const fs::path &ini_path) {
 
     SPDLOG_INFO("include_unobtained_armor = {}", include_unobtained_armor);
     SPDLOG_INFO("include_cut_armor = {}", include_cut_armor);
+    SPDLOG_INFO("spoilers = {}", spoilers);
     SPDLOG_INFO("patch_grace_talk_script = {}", patch_grace_talk_script);
     SPDLOG_INFO("initialize_delay = {}", initialize_delay);
     SPDLOG_INFO("client_side_only = {}", client_side_only);

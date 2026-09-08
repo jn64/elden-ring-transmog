@@ -422,11 +422,11 @@ void shop::initialize() {
     SPDLOG_INFO("Shadow of the Erdtree {}",
                 shadow_of_the_erdtree_installed
                     ? "installed"
-                    : "not installed, armor sets unavailable for transmog");
+                    : "not installed");
 
     SPDLOG_INFO("Tarnished Pack {}", tarnished_pack_installed
                                          ? "installed"
-                                         : "not installed, armor sets unavailable for transmog");
+                                         : "not installed");
 
     // Add goods and shop entries for every armor piece the player can buy
     for (auto [protector_id, protector_row] : er::param::EquipParamProtector) {
@@ -479,15 +479,16 @@ void shop::initialize() {
             continue;
         }
 
-        // Skip Shadow of the Erdtree items if not installed
-        if (!shadow_of_the_erdtree_installed &&
+        // Skip Shadow of the Erdtree items if not installed AND configured for no spoilers
+        if (!config::spoilers && !shadow_of_the_erdtree_installed &&
             (protector_is_dlc || dlc_transformation_protector)) {
             SPDLOG_DEBUG("Skipping Shadow of the Erdtree protector {}", protector_id);
             continue;
         }
 
-        // Skip Tarnished Pack items, if not installed
-        if (!tarnished_pack_installed && tarnished_pack_protector_ids.contains(protector_id)) {
+        // Skip Tarnished Pack items, if not installed AND configured for no spoilers
+        if (!config::spoilers && !tarnished_pack_installed &&
+            tarnished_pack_protector_ids.contains(protector_id)) {
             SPDLOG_DEBUG("Skipping Tarnished Pack protector {}", protector_id);
             continue;
         }
